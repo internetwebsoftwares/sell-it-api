@@ -5,6 +5,7 @@ const Ad = require("../Models/advertisement");
 const AdImage = require("../Models/adImages");
 const PreviewImage = require("../Models/previewImage");
 const auth = require("../Middlewares/auth");
+const Report = require("../Models/report");
 
 //Multer config
 const uploads = multer({
@@ -199,7 +200,47 @@ router.delete("/ad/:id/remove", auth, async (req, res) => {
       return res.status(404).send("No result found");
     }
     await ad.remove();
+    await Report.deleteMany({ adId: ad._id });
     res.send("Your advertisment has been removed");
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+//Delete anyone's ad (Admin)
+router.delete("/admin/ad/:id/remove", auth, async (req, res) => {
+  try {
+    const ad = await Ad.findOne({ _id: req.params.id });
+    if (!req.user.isAdmin) {
+      return res.status(404).send("You don't have this permission");
+    }
+    if (!ad) {
+      return res.status(404).send("No result found");
+    }
+    await ad.remove();
+    await Report.deleteMany({ adId: ad._id });
+    res.send("Advertisment has been removed by admin");
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+//Search an ad
+router.get("/ads/search/:pageNo", async (req, res) => {
+  try {
+    let ads = await Ad.find({
+      $or: [
+        { title: { $regex: `${req.query.searchQuery}`, $options: "gi" } },
+        { description: { $regex: `${req.query.searchQuery}`, $options: "gi" } },
+      ],
+    })
+      .limit(10)
+      .skip(parseInt(req.params.pageNo) * 10 - 10)
+      .sort({
+        createdAt: "-1",
+      });
+
+    res.send(ads);
   } catch (error) {
     res.status(500).send(error);
   }

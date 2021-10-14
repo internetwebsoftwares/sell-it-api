@@ -20,6 +20,10 @@ const adSchema = new mongoose.Schema(
       required: true,
       default: "smartphone",
     },
+    isSold: {
+      type: Boolean,
+      default: false,
+    },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,

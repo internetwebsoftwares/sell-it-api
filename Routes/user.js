@@ -6,6 +6,7 @@ const AdImages = require("../Models/adImages");
 const PreviewImage = require("../Models/previewImage");
 const bcrypt = require("bcryptjs");
 const auth = require("../Middlewares/auth");
+const Report = require("../Models/report");
 
 //Register
 router.post("/register", async (req, res) => {
@@ -193,8 +194,28 @@ router.delete("/user/account/delete", auth, async (req, res) => {
     await Ads.deleteMany({ owner: user._id });
     await AdImages.deleteMany({ ad: user._id });
     await PreviewImage.deleteMany({ owner: user._id });
+    await Report.deleteMany({ reportedByUserId: user._id });
     await user.remove();
     res.send("Your account has been deleted");
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+//Delete anyones account (Admin)
+router.delete("/admin/user/:id/account/delete", auth, async (req, res) => {
+  try {
+    const user = req.user;
+    if (!user.isAdmin) {
+      return res.status(400).send("You do not have this permission");
+    }
+    const accountAboutToDelete = await User.findById(req.params.id);
+    await Ads.deleteMany({ owner: accountAboutToDelete._id });
+    await AdImages.deleteMany({ ad: accountAboutToDelete._id });
+    await PreviewImage.deleteMany({ owner: accountAboutToDelete._id });
+    await Report.deleteMany({ reportedByUserId: accountAboutToDelete._id });
+    await accountAboutToDelete.remove();
+    res.send("Account has been deleted by admin");
   } catch (error) {
     res.status(500).send(error);
   }
