@@ -1,0 +1,34 @@
+APP'S OPERATIONS
+
+--------------------------------------------------------------------
+User's related operations
+--------------------------------------------------------------------
+Register - /register
+Login - /login
+Logout - /logout
+Update profile - /user/profile/update
+Change password - /user/password/change
+Delete account - /user/account/delete
+Delete account (Admin) - /admin/user/:id/account/delete
+--------------------------------------------------------------------
+
+--------------------------------------------------------------------
+Ad's related operations
+--------------------------------------------------------------------
+Add advertisement - /ad/new
+Read all Ads - /ads/all/:pageNum
+Read one Ad - /ad/:id
+Read image of an Ad - /ad/:id/image/:index
+Read preview image of an Ad - /ad/:id/preview/image
+Edit an Ad - /ad/:id/edit
+Delete an Ad - /ad/:id/remove
+Delete anyone's Ad (Admin) - /admin/ad/:id/remove
+Search an Ad - /ads/search/:pageNo
+--------------------------------------------------------------------
+
+--------------------------------------------------------------------
+Report's related operations
+--------------------------------------------------------------------
+Report an Ad - /report/:id/post
+Read all the reports (Admin) - /reports/all/:pageNum
+--------------------------------------------------------------------

@@ -13,52 +13,48 @@ router.post("/register", async (req, res) => {
   let { firstName, lastName, phoneNumber, email, password } = req.body;
   try {
     if (!firstName) {
-      return res.status(400).send("First name is required");
+      return res.send("First name is required");
     }
     if (firstName.length < 3) {
-      return res.status(400).send("First name must have atleast 3 characters");
+      return res.send("First name must have atleast 3 characters");
     }
     if (!lastName) {
-      return res.status(400).send("Last name is required");
+      return res.send("Last name is required");
     }
     if (lastName.length < 3) {
-      return res.status(400).send("Last name must have atleast 3 characters");
+      return res.send("Last name must have atleast 3 characters");
     }
     if (!phoneNumber) {
-      return res.status(400).send("Phone number is required");
+      return res.send("Phone number is required");
     }
     if (phoneNumber.length < 10) {
-      return res.status(400).send("Invalid phone number");
+      return res.send("Invalid phone number");
     }
 
     const isPhoneNumAvailable = await User.findOne({ phoneNumber });
 
     if (isPhoneNumAvailable) {
-      return res
-        .status(400)
-        .send("There is already an account with this phone number");
+      return res.send("There is already an account with this phone number");
     }
 
     if (!email) {
-      return res.status(400).send("Email is required");
+      return res.send("Email is required");
     }
     if (!isEmail(email)) {
-      return res.status(400).send("Invalid email address");
+      return res.send("Invalid email address");
     }
 
     const isEmailAvailable = await User.findOne({ email });
 
     if (isEmailAvailable) {
-      return res
-        .status(400)
-        .send("There is already an account with this email address");
+      return res.send("There is already an account with this email address");
     }
 
     if (!password) {
-      return res.status(400).send("Password is required");
+      return res.send("Password is required");
     }
     if (password.length < 7) {
-      return res.status(400).send("Password must be of atleast 7 characters");
+      return res.send("Password must be of atleast 7 characters");
     }
 
     const user = new User({
@@ -82,20 +78,20 @@ router.post("/login", async (req, res) => {
   let { email, password } = req.body;
   try {
     if (!email) {
-      return res.status(400).send("Please enter email address or phone number");
+      return res.send("Please enter email address or phone number");
     }
     if (!password) {
-      return res.status(400).send("Please enter password");
+      return res.send("Please enter password");
     }
     const user = await User.findOne({
       $or: [{ email }, { phoneNumber: email }],
     });
     if (!user) {
-      return res.status(404).send("There is no user found");
+      return res.send("There is no user found");
     }
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
     if (!isPasswordCorrect) {
-      return res.status(404).send("Incorrect password");
+      return res.send("Incorrect password");
     }
     const token = await user.generateAuthToken();
     res.send({ user, token });
@@ -136,9 +132,7 @@ router.put("/user/profile/update", auth, async (req, res) => {
     res.send("Profile updated");
   } catch (error) {
     if (error.keyPattern.phoneNumber || error.keyValue.phoneNumber) {
-      return res
-        .status(400)
-        .send("There is already an account with this phone number");
+      return res.send("There is already an account with this phone number");
     }
     res.status(500).send(error);
   }
@@ -149,17 +143,17 @@ router.put("/user/password/change", auth, async (req, res) => {
   let { currPass, newPass } = req.body;
   try {
     if (!currPass) {
-      return res.status(400).send("Please enter current password");
+      return res.send("Please enter current password");
     }
 
     if (!newPass) {
-      return res.status(400).send("Please enter new password");
+      return res.send("Please enter new password");
     }
 
     if (currPass === newPass) {
-      return res
-        .status(400)
-        .send("New password must be different from the current password");
+      return res.send(
+        "New password must be different from the current password"
+      );
     }
     const isPasswordCorrect = await bcrypt.compare(currPass, req.user.password);
 
@@ -184,12 +178,12 @@ router.delete("/user/account/delete", auth, async (req, res) => {
   let { password } = req.body;
   try {
     if (!password) {
-      return res.status(400).send("Please enter password");
+      return res.send("Please enter password");
     }
     const user = req.user;
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
     if (!isPasswordCorrect) {
-      return res.status(400).send("Incorrect password");
+      return res.send("Incorrect password");
     }
     await Ads.deleteMany({ owner: user._id });
     await AdImages.deleteMany({ ad: user._id });
@@ -207,7 +201,7 @@ router.delete("/admin/user/:id/account/delete", auth, async (req, res) => {
   try {
     const user = req.user;
     if (!user.isAdmin) {
-      return res.status(400).send("You do not have this permission");
+      return res.send("You do not have this permission");
     }
     const accountAboutToDelete = await User.findById(req.params.id);
     await Ads.deleteMany({ owner: accountAboutToDelete._id });

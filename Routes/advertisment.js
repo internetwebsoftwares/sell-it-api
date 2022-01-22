@@ -26,23 +26,23 @@ router.post(
     let { title, description, price, category, contactPhoneNumber, location } =
       req.body;
     if (!title) {
-      return res.status(400).send("Title is required");
+      return res.send("Title is required");
     }
     if (!description) {
-      return res.status(400).send("Description is required");
+      return res.send("Description is required");
     }
     if (!price) {
-      return res.status(400).send("Price is required");
+      return res.send("Price is required");
     }
 
     if (!category) {
-      return res.status(400).send("Please select a category");
+      return res.send("Please select a category");
     }
     if (!contactPhoneNumber) {
-      return res.status(400).send("Contact phone number is required");
+      return res.send("Contact phone number is required");
     }
     if (req.files.length < 1) {
-      return res.status(400).send("Please select atleast 1 image");
+      return res.send("Please select atleast 1 image");
     }
 
     let imagesBuffer = [];
@@ -99,9 +99,9 @@ router.post(
   },
   (error, req, res, next) => {
     if (error.code === "LIMIT_UNEXPECTED_FILE") {
-      return res.status(400).send("You can only upload upto 5 images");
+      return res.send("You can only upload upto 5 images");
     }
-    res.status(400).send({ error: error });
+    res.send({ error: error });
   }
 );
 
@@ -118,7 +118,7 @@ router.get("/ad/:id", async (req, res) => {
   try {
     const ad = await Ad.findById(req.params.id);
     if (!ad) {
-      return res.status(404).send("No result found");
+      return res.send("No result found");
     }
     res.send(ad);
   } catch (error) {
@@ -131,7 +131,7 @@ router.get("/ad/:id/image/:index", async (req, res) => {
   try {
     const ad = await AdImage.findOne({ adId: req.params.id });
     if (!ad) {
-      return res.status(404).send("No result found");
+      return res.send("No result found");
     }
 
     res.set("Content-Type", "image/png");
@@ -141,12 +141,12 @@ router.get("/ad/:id/image/:index", async (req, res) => {
   }
 });
 
-//Read image of an ad Small
+//Read image of an ad (Preview)
 router.get("/ad/:id/preview/image", async (req, res) => {
   try {
     const image = await PreviewImage.findOne({ adId: req.params.id });
     if (!image) {
-      return res.status(404).send("No result found");
+      return res.send("No result found");
     }
 
     res.set("Content-Type", "image/png");
@@ -161,7 +161,7 @@ router.put("/ad/:id/edit", auth, async (req, res) => {
   try {
     const ad = await Ad.findOne({ _id: req.params.id, owner: req.user._id });
     if (!ad) {
-      return res.status(404).send("No result found");
+      return res.send("No result found");
     }
     const availableUpdates = [
       "title",
@@ -178,7 +178,7 @@ router.put("/ad/:id/edit", auth, async (req, res) => {
       availableUpdates.includes(update)
     );
     if (!isValidUpdate) {
-      return res.send(400).send("Invalid updates");
+      return res.send("Invalid updates");
     }
 
     userUpdating.forEach((update) => {
@@ -197,7 +197,7 @@ router.delete("/ad/:id/remove", auth, async (req, res) => {
   try {
     const ad = await Ad.findOne({ _id: req.params.id, owner: req.user._id });
     if (!ad) {
-      return res.status(404).send("No result found");
+      return res.send("No result found");
     }
     await ad.remove();
     await Report.deleteMany({ adId: ad._id });
@@ -212,10 +212,10 @@ router.delete("/admin/ad/:id/remove", auth, async (req, res) => {
   try {
     const ad = await Ad.findOne({ _id: req.params.id });
     if (!req.user.isAdmin) {
-      return res.status(404).send("You don't have this permission");
+      return res.send("You don't have this permission");
     }
     if (!ad) {
-      return res.status(404).send("No result found");
+      return res.send("No result found");
     }
     await ad.remove();
     await Report.deleteMany({ adId: ad._id });
