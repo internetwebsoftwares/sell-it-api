@@ -84,10 +84,6 @@ router.post("/login", async (req, res) => {
       return res.send("Please enter password");
     }
 
-    if (!isEmail(email)) {
-      return res.send("Invalid email address");
-    }
-
     const user = await User.findOne({
       $or: [{ email }, { phoneNumber: email }],
     });
