@@ -83,11 +83,16 @@ router.post("/login", async (req, res) => {
     if (!password) {
       return res.send("Please enter password");
     }
+
+    if (!isEmail(email)) {
+      return res.send("Invalid email address");
+    }
+
     const user = await User.findOne({
       $or: [{ email }, { phoneNumber: email }],
     });
     if (!user) {
-      return res.send("There is no user found");
+      return res.send("No user found with this email or phone no");
     }
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
     if (!isPasswordCorrect) {
