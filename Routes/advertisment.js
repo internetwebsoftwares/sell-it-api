@@ -49,7 +49,7 @@ router.post(
 
     for (let file of req.files) {
       let imageBuffer = await sharp(file.buffer)
-        .resize(350, 220)
+        .resize(350, 350)
         .png()
         .toBuffer();
       imagesBuffer.push(imageBuffer);
