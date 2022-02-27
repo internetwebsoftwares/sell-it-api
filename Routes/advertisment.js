@@ -45,6 +45,10 @@ router.post(
       return res.send("Please select atleast 1 image");
     }
 
+    if (req.files.length > 5) {
+      return res.send("You can only upload 5 images at once");
+    }
+
     let imagesBuffer = [];
 
     for (let file of req.files) {
@@ -98,9 +102,6 @@ router.post(
     res.send("Ad has been created");
   },
   (error, req, res, next) => {
-    if (error.code === "LIMIT_UNEXPECTED_FILE") {
-      return res.send("You can only upload upto 5 images");
-    }
     res.send({ error: error });
   }
 );
@@ -240,7 +241,7 @@ router.get("/ads/search/:pageNo", async (req, res) => {
         createdAt: "-1",
       });
 
-    res.send(ads);
+    res.send({ title: ads.title, description: ads.description });
   } catch (error) {
     res.status(500).send(error);
   }

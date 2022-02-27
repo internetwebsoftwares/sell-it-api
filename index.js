@@ -22,9 +22,9 @@ app.listen(PORT, () =>
   console.log(`Server is up on port: http://localhost:${PORT}/`)
 );
 
-async function passwordEncrypter(password) {
-  const hashed = await bcrypt.hash(password, 8);
-  console.log(hashed);
-}
+// async function passwordEncrypter(password) {
+//   const hashed = await bcrypt.hash(password, 8);
+//   console.log(hashed);
+// }
 
-passwordEncrypter("@ta1234");
+// passwordEncrypter("@ta1234");

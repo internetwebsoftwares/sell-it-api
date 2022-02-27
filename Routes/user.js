@@ -119,6 +119,7 @@ router.put("/user/profile/update", auth, async (req, res) => {
   try {
     const user = req.user;
     let availableUpdates = ["firstName", "lastName", "phoneNumber"];
+
     const userUpdating = Object.keys(req.body);
     const isValidOperation = userUpdating.every((update) =>
       availableUpdates.includes(update)
