@@ -244,6 +244,7 @@ router.get("/ads/search/:pageNo", async (req, res) => {
     res.send(
       ads.map((ad) => {
         return {
+          _id: ad._id,
           title: ad.title,
           description: ad.description,
         };
