@@ -241,7 +241,14 @@ router.get("/ads/search/:pageNo", async (req, res) => {
         createdAt: "-1",
       });
 
-    res.send({ title: ads.title, description: ads.description });
+    res.send(
+      ads.map((ad) => {
+        return {
+          title: ad.title,
+          description: ad.description,
+        };
+      })
+    );
   } catch (error) {
     res.status(500).send(error);
   }
