@@ -233,6 +233,7 @@ router.get("/ads/search/:pageNo", async (req, res) => {
       $or: [
         { title: { $regex: `${req.query.searchQuery}`, $options: "gi" } },
         { description: { $regex: `${req.query.searchQuery}`, $options: "gi" } },
+        { category: { $regex: `${req.query.searchQuery}`, $options: "gi" } },
       ],
     })
       .limit(10)
