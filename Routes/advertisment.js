@@ -60,7 +60,7 @@ router.post(
     }
 
     let previewImageBuffer = await sharp(req.files[0].buffer)
-      .resize(140, 140)
+      .resize(150, 150)
       .png()
       .toBuffer();
 
