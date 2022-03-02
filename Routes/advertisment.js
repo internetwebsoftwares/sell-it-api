@@ -23,8 +23,15 @@ router.post(
   auth,
   uploads.array("images", 5),
   async (req, res) => {
-    let { title, description, price, category, contactPhoneNumber, location } =
-      req.body;
+    let {
+      title,
+      description,
+      price,
+      category,
+      contactPhoneNumber,
+      location,
+      city,
+    } = req.body;
     if (!title) {
       return res.send("Title is required");
     }
@@ -40,6 +47,9 @@ router.post(
     }
     if (!contactPhoneNumber) {
       return res.send("Contact phone number is required");
+    }
+    if (!city) {
+      return res.send("Please add city");
     }
     if (req.files.length < 1) {
       return res.send("Please select atleast 1 image");
@@ -111,6 +121,7 @@ router.get("/ads/all/:pageNum", async (req, res) => {
   const ads = await Ad.find({})
     .limit(10)
     .skip(parseInt(req.params.pageNum) * 10 - 10);
+
   res.send(ads);
 });
 

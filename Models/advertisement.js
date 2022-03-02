@@ -48,6 +48,11 @@ const adSchema = new mongoose.Schema(
         default: 0.0877,
       },
     },
+    city: {
+      type: String,
+      default: "",
+      required: true,
+    },
   },
   { timestamps: true }
 );
