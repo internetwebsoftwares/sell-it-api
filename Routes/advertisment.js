@@ -121,7 +121,6 @@ router.get("/ads/all/:pageNum", async (req, res) => {
   const ads = await Ad.find({})
     .limit(10)
     .skip(parseInt(req.params.pageNum) * 10 - 10);
-
   res.send(ads);
 });
 
