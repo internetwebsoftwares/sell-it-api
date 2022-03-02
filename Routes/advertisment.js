@@ -10,7 +10,7 @@ const Report = require("../Models/report");
 //Multer config
 const uploads = multer({
   fileFilter(req, file, cb) {
-    if (!file.originalname.match(/\.(png|jpg|jpeg|jfif|tiff)$/)) {
+    if (!file.originalname.match(/\.(png|jpg|jpeg|jfif)$/)) {
       return cb(new Error("Only supports png and jpeg file types"));
     }
     cb(undefined, true);
