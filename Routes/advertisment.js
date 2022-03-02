@@ -185,6 +185,7 @@ router.put("/ad/:id/edit", auth, async (req, res) => {
       "ownerName",
       "contactPhoneNumber",
       "location",
+      "city",
     ];
 
     const userUpdating = Object.keys(req.body);
