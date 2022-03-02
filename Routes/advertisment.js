@@ -82,6 +82,8 @@ router.post(
       owner: req.user._id,
       contactPhoneNumber,
       category,
+      city,
+      isPremium,
       location,
       ownerName: req.user.firstName + " " + req.user.lastName,
     });
