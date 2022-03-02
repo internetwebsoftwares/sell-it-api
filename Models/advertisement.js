@@ -24,6 +24,10 @@ const adSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isPremium: {
+      type: Boolean,
+      default: false,
+    },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,

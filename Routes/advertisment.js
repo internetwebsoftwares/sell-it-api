@@ -31,6 +31,7 @@ router.post(
       contactPhoneNumber,
       location,
       city,
+      isPremium,
     } = req.body;
     if (!title) {
       return res.send("Title is required");
