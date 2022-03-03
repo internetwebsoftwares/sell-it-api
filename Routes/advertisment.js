@@ -140,6 +140,15 @@ router.get("/ad/:id", async (req, res) => {
   }
 });
 
+//Read home page items
+router.get("/ads/home", async (req, res) => {
+  try {
+    const ads = await Ad.find({ isPremium: true });
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
 //Read image of an ad HD
 router.get("/ad/:id/image/:index", async (req, res) => {
   try {
@@ -186,6 +195,7 @@ router.put("/ad/:id/edit", auth, async (req, res) => {
       "contactPhoneNumber",
       "location",
       "city",
+      "isPremium",
     ];
 
     const userUpdating = Object.keys(req.body);
