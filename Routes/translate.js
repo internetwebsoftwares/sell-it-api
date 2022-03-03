@@ -2,7 +2,7 @@ const router = require("express").Router();
 const { translate } = require("bing-translate-api");
 
 // Get translation
-router.get("/api/translate", async (req, res) => {
+router.post("/api/translate", async (req, res) => {
   try {
     const text = req.body.text;
     const from = req.body.from;
