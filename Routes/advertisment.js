@@ -145,7 +145,7 @@ router.get("/ad/:id", async (req, res) => {
 //Read home page items
 router.get("/ads/home", async (req, res) => {
   try {
-    const ads = await Ad.find({ isPremium: true });
+    const ads = await Ad.find({ isPremium: true }).limit(10);
   } catch (error) {
     res.status(500).send(error);
   }
