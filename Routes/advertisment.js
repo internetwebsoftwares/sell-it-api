@@ -123,7 +123,11 @@ router.post(
 
 //Read all ads
 router.get("/ads/all/:pageNum", async (req, res) => {
-  const ads = await Ad.find({})
+  let options = req.query;
+
+  console.log(req.query);
+
+  const ads = await Ad.find(options)
     .limit(10)
     .skip(parseInt(req.params.pageNum) * 10 - 10);
   res.send(ads);
@@ -137,16 +141,6 @@ router.get("/ad/:id", async (req, res) => {
       return res.send("No result found");
     }
     res.send(ad);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
-
-//Read home page items
-router.get("/ads/home", async (req, res) => {
-  try {
-    const ads = await Ad.find({ isPremium: true }).limit(10);
-    res.send(ads);
   } catch (error) {
     res.status(500).send(error);
   }
