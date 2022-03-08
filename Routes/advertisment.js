@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const multer = require("multer");
 const sharp = require("sharp");
-const { translate } = require("bing-translate-api");
 
 const Ad = require("../Models/advertisement");
 const AdImage = require("../Models/adImages");
@@ -283,22 +282,6 @@ router.get("/ads/search/:pageNo", async (req, res) => {
         };
       })
     );
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
-
-// Get translation
-router.post("/ad/translate/", async (req, res) => {
-  try {
-    const text = req.body.text;
-    const from = req.body.from;
-    const to = req.body.to;
-    if (!text) return res.send("Please enter something");
-    if (!from) from = "auto-detect";
-    if (!to) to = "en";
-    const response = await translate(text, from, to, true);
-    res.status(200).json(response);
   } catch (error) {
     res.status(500).send(error);
   }
