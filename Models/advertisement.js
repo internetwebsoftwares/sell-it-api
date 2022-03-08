@@ -18,7 +18,7 @@ const adSchema = new mongoose.Schema(
     category: {
       type: String,
       required: true,
-      default: "smartphone",
+      default: "Other",
     },
     isSold: {
       type: Boolean,

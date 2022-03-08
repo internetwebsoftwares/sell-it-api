@@ -9,6 +9,8 @@ const PreviewImage = require("../Models/previewImage");
 const auth = require("../Middlewares/auth");
 const Report = require("../Models/report");
 
+const fs = require("fs");
+
 //Multer config
 const uploads = multer({
   fileFilter(req, file, cb) {
@@ -124,12 +126,15 @@ router.post(
 //Read all ads
 router.get("/ads/all/:pageNum", async (req, res) => {
   let options = req.query;
-
-  console.log(req.query);
-
-  const ads = await Ad.find(options)
+  const categoriesJson = JSON.parse(options.categories);
+  const ads = await Ad.find({
+    category: {
+      $in: categoriesJson,
+    },
+  })
     .limit(10)
     .skip(parseInt(req.params.pageNum) * 10 - 10);
+
   res.send(ads);
 });
 
