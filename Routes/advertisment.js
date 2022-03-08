@@ -125,13 +125,18 @@ router.post(
 
 //Read all ads
 router.get("/ads/all/:pageNum", async (req, res) => {
-  let options = req.query;
-  const categoriesJson = JSON.parse(options.categories);
-  const ads = await Ad.find({
-    category: {
-      $in: categoriesJson,
-    },
-  })
+  const categoriesJson = JSON.parse(req.query.categories);
+  let options;
+  if (categoriesJson.length > 0) {
+    options = {
+      category: {
+        $in: categoriesJson,
+      },
+    };
+  } else {
+    options = {};
+  }
+  const ads = await Ad.find(options)
     .limit(10)
     .skip(parseInt(req.params.pageNum) * 10 - 10);
 
