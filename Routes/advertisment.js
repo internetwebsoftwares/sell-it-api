@@ -126,7 +126,7 @@ router.post(
 router.get("/ads/all/:pageNum", async (req, res) => {
   let options;
   if (
-    req.query.categories === undefined ||
+    JSON.parse(req.query.categories) === undefined ||
     JSON.parse(req.query.categories).length < 1
   ) {
     options = {};
