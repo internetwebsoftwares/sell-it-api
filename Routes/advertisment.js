@@ -124,7 +124,7 @@ router.post(
 
 //Read all ads
 router.get("/ads/all/:pageNum", async (req, res) => {
-  const categories = req.body.categories;
+  const categories = JSON.parse(req.body.categories);
   let options;
   if (categories.length > 0) {
     options = {
