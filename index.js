@@ -1,3 +1,4 @@
+// heroku logs --app api-sell-it
 require("dotenv").config();
 const express = require("express");
 const app = express();

@@ -124,16 +124,15 @@ router.post(
 
 //Read all ads
 router.get("/ads/all/:pageNum", async (req, res) => {
-  const categories = JSON.parse(req.body.categories);
   let options;
-  if (categories.length > 0) {
+  if (req.body.categories === undefined || req.body.categories.length < 1) {
+    options = {};
+  } else {
     options = {
       category: {
-        $in: categories,
+        $in: req.body.categories,
       },
     };
-  } else {
-    options = {};
   }
   const ads = await Ad.find(options)
     .limit(10)
