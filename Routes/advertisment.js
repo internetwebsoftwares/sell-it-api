@@ -291,7 +291,6 @@ router.get("/searched/all/:pageNum", async (req, res) => {
   let searchedQuery = req.query.searchedQuery;
   let priceRange = JSON.parse(req.query.priceRange);
   let sortBy = req.query.sortBy;
-
   let options = {
     $or: [
       { title: searchedQuery },
