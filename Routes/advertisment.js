@@ -286,4 +286,31 @@ router.get("/ads/search/:pageNo", async (req, res) => {
   }
 });
 
+//Read search results
+router.get("/searched/all/:pageNum", async (req, res) => {
+  let searchedQuery = req.query.searchedQuery;
+  let priceRange = JSON.parse(req.query.priceRange);
+  let sortBy = req.query.sortBy;
+
+  let options = {
+    $or: [
+      { title: searchedQuery },
+      { description: searchedQuery },
+      { category: searchedQuery },
+    ],
+    price: {
+      $gte: priceRange[0],
+      $lte: priceRange[1],
+    },
+  };
+  const ads = await Ad.find(options)
+    .limit(10)
+    .skip(parseInt(req.params.pageNum) * 10 - 10)
+    .sort({
+      price: sortBy,
+    });
+
+  res.send(ads);
+});
+
 module.exports = router;
