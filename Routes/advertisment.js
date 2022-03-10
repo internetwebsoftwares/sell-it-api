@@ -275,10 +275,9 @@ router.get("/ads/search/:pageNo", async (req, res) => {
     res.send(
       ads.map((ad) => {
         return {
-          previewImageUrl: ad.previewImageUrl,
           _id: ad._id,
+          category: ad.category,
           title: ad.title,
-          description: ad.description,
         };
       })
     );
