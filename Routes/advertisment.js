@@ -277,7 +277,19 @@ router.get("/ads/search/:pageNo", async (req, res) => {
         createdAt: "-1",
       });
 
-    res.send(ads);
+    let uniqueAdsTitle = [];
+    let uniqueAds = [];
+
+    for (let i = 0; i < ads.length; i++) {
+      if (uniqueAdsTitle.includes(ads[i].title)) {
+        continue;
+      } else {
+        uniqueAdsTitle.push(ads[i].title);
+        uniqueAds.push(ads[i]);
+      }
+    }
+
+    res.send(uniqueAds);
   } catch (error) {
     res.status(500).send(error);
   }
