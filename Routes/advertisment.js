@@ -296,18 +296,18 @@ router.get("/ads/search/:pageNo", async (req, res) => {
 });
 
 //Read search results
-router.get("/searched/all/:pageNum", async (req, res) => {
-  let searchedQuery = req.query.searchedQuery;
-  let priceRange = JSON.parse(req.query.priceRange);
-  let sortBy = req.query.sortBy;
+router.post("/searched/all/:pageNum", async (req, res) => {
+  let searchedQuery = req.body.searchedQuery;
+  let priceRange = req.body.priceRange;
+  let sortBy = req.body.sortBy;
 
   let options = {
     $and: [
       {
         $or: [
-          { title: searchedQuery.replaceAll('"', "") },
-          { description: searchedQuery.replaceAll('"', "") },
-          { category: searchedQuery.replaceAll('"', "") },
+          { title: searchedQuery },
+          { description: searchedQuery },
+          { category: searchedQuery },
         ],
       },
       {
