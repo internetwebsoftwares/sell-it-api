@@ -259,28 +259,25 @@ router.delete("/admin/ad/:id/remove", auth, async (req, res) => {
 //Search an ad
 router.get("/ads/search/:pageNo", async (req, res) => {
   try {
-    let ads = await Ad.find({
-      $or: [
-        { title: { $regex: `${req.query.searchQuery}`, $options: "gi" } },
-        { description: { $regex: `${req.query.searchQuery}`, $options: "gi" } },
-        { category: { $regex: `${req.query.searchQuery}`, $options: "gi" } },
-      ],
-    })
+    let ads = await Ad.find(
+      {
+        $or: [
+          { title: { $regex: `${req.query.searchQuery}`, $options: "gi" } },
+          {
+            description: { $regex: `${req.query.searchQuery}`, $options: "gi" },
+          },
+          { category: { $regex: `${req.query.searchQuery}`, $options: "gi" } },
+        ],
+      },
+      { title: 1, category: 1, price: 1 }
+    )
       .limit(10)
       .skip(parseInt(req.params.pageNo) * 10 - 10)
       .sort({
         createdAt: "-1",
       });
 
-    res.send(
-      ads.map((ad) => {
-        return {
-          _id: ad._id,
-          category: ad.category,
-          title: ad.title,
-        };
-      })
-    );
+    res.send(ads);
   } catch (error) {
     res.status(500).send(error);
   }
@@ -291,17 +288,25 @@ router.get("/searched/all/:pageNum", async (req, res) => {
   let searchedQuery = req.query.searchedQuery;
   let priceRange = JSON.parse(req.query.priceRange);
   let sortBy = req.query.sortBy;
+
   let options = {
-    $or: [
-      { title: searchedQuery },
-      { description: searchedQuery },
-      { category: searchedQuery },
+    $and: [
+      {
+        $or: [
+          { title: searchedQuery },
+          { description: searchedQuery },
+          { category: searchedQuery },
+        ],
+      },
+      {
+        price: {
+          $gte: priceRange[0],
+          $lte: priceRange[1],
+        },
+      },
     ],
-    price: {
-      $gte: priceRange[0],
-      $lte: priceRange[1],
-    },
   };
+
   const ads = await Ad.find(options)
     .limit(10)
     .skip(parseInt(req.params.pageNum) * 10 - 10)
