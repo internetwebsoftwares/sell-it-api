@@ -20,6 +20,7 @@ const adSchema = new mongoose.Schema(
       required: true,
       default: "Other",
     },
+    savedBy: [String],
     isSold: {
       type: Boolean,
       default: false,

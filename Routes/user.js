@@ -207,7 +207,7 @@ router.delete("/admin/user/:id/account/delete", auth, async (req, res) => {
     }
     const accountAboutToDelete = await User.findById(req.params.id);
     await Ads.deleteMany({ owner: accountAboutToDelete._id });
-    await AdImages.deleteMany({ ad: accountAboutToDelete._id });
+    await AdImages.deleteMany({ owner: accountAboutToDelete._id });
     await PreviewImage.deleteMany({ owner: accountAboutToDelete._id });
     await Report.deleteMany({ reportedByUserId: accountAboutToDelete._id });
     await accountAboutToDelete.remove();

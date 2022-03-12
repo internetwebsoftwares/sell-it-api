@@ -297,36 +297,59 @@ router.get("/ads/search/:pageNo", async (req, res) => {
 
 //Read search results
 router.post("/searched/all/:pageNum", async (req, res) => {
-  let searchedQuery = req.body.searchedQuery;
-  let priceRange = req.body.priceRange;
-  let sortBy = req.body.sortBy;
+  try {
+    let searchedQuery = req.body.searchedQuery;
+    let priceRange = req.body.priceRange;
+    let sortBy = req.body.sortBy;
 
-  let options = {
-    $and: [
-      {
-        $or: [
-          { title: searchedQuery },
-          { description: searchedQuery },
-          { category: searchedQuery },
-        ],
-      },
-      {
-        price: {
-          $gte: priceRange[0],
-          $lte: priceRange[1],
+    let options = {
+      $and: [
+        {
+          $or: [
+            { title: searchedQuery },
+            { description: searchedQuery },
+            { category: searchedQuery },
+          ],
         },
-      },
-    ],
-  };
+        {
+          price: {
+            $gte: priceRange[0],
+            $lte: priceRange[1],
+          },
+        },
+      ],
+    };
 
-  const ads = await Ad.find(options)
-    .limit(10)
-    .skip(parseInt(req.params.pageNum) * 10 - 10)
-    .sort({
-      price: sortBy,
-    });
+    const ads = await Ad.find(options)
+      .limit(10)
+      .skip(parseInt(req.params.pageNum) * 10 - 10)
+      .sort({
+        price: sortBy,
+      });
 
-  res.send(ads);
+    res.send(ads);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+// Product is sold
+router.put("/ad/sold/:id/", auth, async (req, res) => {
+  try {
+    const ad = await Ad.findById(req.params.id);
+    if (ad.isSold) return res.status(400).send("Product has already been sold");
+    const adImages = await AdImage.findOne({ adId: ad._id.toString() });
+    if (!ad) return res.status(404).send("Ad not found");
+    if (!req.user.isAdmin || ad.owner.toString() !== req.user._id.toString()) {
+      return res.status(401).send("You cannot manipulate someone else's Ad");
+    }
+    ad.isSold = true;
+    await ad.save();
+    await adImages.remove();
+    res.status(200).send("Product has been sold");
+  } catch (error) {
+    res.status(500).send(error);
+  }
 });
 
 module.exports = router;
