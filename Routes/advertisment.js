@@ -293,9 +293,9 @@ router.get("/searched/all/:pageNum", async (req, res) => {
     $and: [
       {
         $or: [
-          { title: searchedQuery },
-          { description: searchedQuery },
-          { category: searchedQuery },
+          { title: searchedQuery.replaceAll('"', "") },
+          { description: searchedQuery.replaceAll('"', "") },
+          { category: searchedQuery.replaceAll('"', "") },
         ],
       },
       {
