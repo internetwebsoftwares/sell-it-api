@@ -47,19 +47,19 @@ const adSchema = new mongoose.Schema(
         default: 0.0877,
       },
     },
-    country: {
-      type: String,
-      default: "India",
-      required: true,
-    },
     state: {
       type: String,
-      default: "Maharashtra",
+      default: "",
+      required: true,
+    },
+    district: {
+      type: String,
+      default: "",
       required: true,
     },
     city: {
       type: String,
-      default: "Bhiwandi",
+      default: "",
       required: true,
     },
   },

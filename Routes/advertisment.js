@@ -32,7 +32,7 @@ router.post(
       price,
       category,
       location,
-      country,
+      district,
       state,
       city,
       isPremium,
@@ -50,11 +50,12 @@ router.post(
     if (!category) {
       return res.send("Please select a category");
     }
-    if (!country) {
-      return res.send("Please select your country");
-    }
+
     if (!state) {
       return res.send("Please select your state");
+    }
+    if (!district) {
+      return res.send("Please select your district");
     }
     if (!city) {
       return res.send("Please add city");
@@ -88,8 +89,8 @@ router.post(
       price,
       owner: req.user._id,
       category,
-      country,
       state,
+      district,
       city,
       isPremium,
       location,
@@ -207,8 +208,8 @@ router.put("/ad/:id/edit", auth, async (req, res) => {
       "category",
       "ownerName",
       "location",
-      "country",
       "state",
+      "district",
       "city",
       "isPremium",
     ];
