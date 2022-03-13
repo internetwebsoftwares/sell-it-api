@@ -33,6 +33,8 @@ router.post(
       category,
       contactPhoneNumber,
       location,
+      country,
+      state,
       city,
       isPremium,
     } = req.body;
@@ -51,6 +53,12 @@ router.post(
     }
     if (!contactPhoneNumber) {
       return res.send("Contact phone number is required");
+    }
+    if (!country) {
+      return res.send("Please select your country");
+    }
+    if (!state) {
+      return res.send("Please select your state");
     }
     if (!city) {
       return res.send("Please add city");
@@ -85,6 +93,8 @@ router.post(
       owner: req.user._id,
       contactPhoneNumber,
       category,
+      country,
+      state,
       city,
       isPremium,
       location,
@@ -203,6 +213,8 @@ router.put("/ad/:id/edit", auth, async (req, res) => {
       "ownerName",
       "contactPhoneNumber",
       "location",
+      "country",
+      "state",
       "city",
       "isPremium",
     ];
