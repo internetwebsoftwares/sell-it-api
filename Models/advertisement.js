@@ -37,11 +37,6 @@ const adSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    contactPhoneNumber: {
-      type: Number,
-      required: true,
-      minLength: 10,
-    },
     location: {
       latitude: {
         type: Number,
