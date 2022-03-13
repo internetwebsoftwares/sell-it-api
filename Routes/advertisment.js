@@ -127,9 +127,12 @@ router.get("/ads/all/:pageNum", async (req, res) => {
   let options;
   let categories = JSON.parse(req.query.categories);
   if (req.query.categories === undefined || categories.length < 1) {
-    options = {};
+    options = {
+      isSold: false,
+    };
   } else {
     options = {
+      isSold: false,
       category: {
         $in: categories,
       },
