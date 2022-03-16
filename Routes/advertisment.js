@@ -306,11 +306,11 @@ router.get("/ads/search/:pageNo", async (req, res) => {
 });
 
 //Read search results
-router.post("/searched/all/:pageNum", async (req, res) => {
+router.get("/searched/all/:pageNum", async (req, res) => {
   try {
-    let searchedQuery = req.body.searchedQuery;
-    let priceRange = req.body.priceRange;
-    let sortBy = req.body.sortBy;
+    let searchedQuery = req.query.searchedQuery;
+    let priceRange = JSON.parse(req.query.priceRange);
+    let sortBy = req.query.sortBy;
 
     let options = {
       $and: [
