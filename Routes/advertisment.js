@@ -362,4 +362,18 @@ router.put("/ad/sold/:id/", auth, async (req, res) => {
   }
 });
 
+// Read saved ads
+router.get("/ads/saved", async (req, res) => {
+  try {
+    const savedAds = await Ad.find({
+      _id: {
+        $in: JSON.parse(req.query.savedAdsIds),
+      },
+    });
+    res.send(savedAds);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
 module.exports = router;
