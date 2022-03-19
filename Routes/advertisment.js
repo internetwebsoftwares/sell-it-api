@@ -129,7 +129,7 @@ router.post(
 );
 
 //Read all ads
-router.get("/ads/mine/alleNum", async (req, res) => {
+router.get("/ads/all/:pageNum", async (req, res) => {
   let options;
   let categories = JSON.parse(req.query.categories);
   if (req.query.categories === undefined || categories.length < 1) {
