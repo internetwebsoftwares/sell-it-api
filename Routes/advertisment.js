@@ -129,7 +129,7 @@ router.post(
 );
 
 //Read all ads
-router.get("/ads/all/:pageNum", async (req, res) => {
+router.get("/ads/mine/alleNum", async (req, res) => {
   let options;
   let categories = JSON.parse(req.query.categories);
   if (req.query.categories === undefined || categories.length < 1) {
@@ -159,6 +159,16 @@ router.get("/ad/:id", async (req, res) => {
       return res.send("No result found");
     }
     res.send(ad);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+// Read your ads
+router.get("/ads/mine/all", auth, async (req, res) => {
+  try {
+    const ads = await Ad.find({ owner: req.user._id.toString() });
+    res.send(ads);
   } catch (error) {
     res.status(500).send(error);
   }
