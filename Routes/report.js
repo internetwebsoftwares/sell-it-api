@@ -29,7 +29,7 @@ router.post("/report/:id/post", auth, async (req, res) => {
 router.get("/reports/all/:pageNum", auth, async (req, res) => {
   if (!req.user.isAdmin)
     return res.status(400).send("You dont have this permission");
-  const totalDocuments = await Ad.Report().countDocuments();
+  const totalDocuments = await Report.find().countDocuments();
   const reports = await Report.find({})
     .limit(10)
     .skip(parseInt(req.params.pageNum) * 10 - 10);
