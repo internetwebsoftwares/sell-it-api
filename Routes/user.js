@@ -217,4 +217,18 @@ router.delete("/admin/user/:id/account/delete", auth, async (req, res) => {
   }
 });
 
+//Read all users (Admin)
+router.get("/admin/users/all/:pageNo", auth, async (req, res) => {
+  try {
+    if (!req.user.isAdmin)
+      return res.status(400).send("You dont have this permission");
+    const users = await User.find({})
+      .limit(10)
+      .skip(parseInt(req.params.pageNo) * 10 - 10);
+    res.send(users);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
 module.exports = router;
