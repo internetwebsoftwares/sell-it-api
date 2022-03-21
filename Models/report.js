@@ -21,7 +21,7 @@ const reportSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    customElements: {
+    comment: {
       type: String,
       required: true,
       default: "",
