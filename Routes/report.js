@@ -8,12 +8,14 @@ router.post("/report/:id/post", auth, async (req, res) => {
   try {
     const ad = await Ad.findById(req.params.id);
     const reportSubject = req.body.reportSubject;
+    const comment = req.body.comment;
     const report = new Report({
       adId: ad._id,
       addTitle: ad.title,
       addLink: `${process.env.DOMAIN}/ad/${ad._id}/`,
       reportedByUserId: req.user._id,
       reportSubject,
+      comment,
     });
 
     await report.save();
