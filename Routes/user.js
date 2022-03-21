@@ -217,7 +217,7 @@ router.delete("/admin/user/:id/account/delete", auth, async (req, res) => {
   }
 });
 
-//Read all users (Admin)
+//Read all users (Admin only)
 router.get("/admin/users/all/:pageNo", auth, async (req, res) => {
   try {
     if (!req.user.isAdmin)
