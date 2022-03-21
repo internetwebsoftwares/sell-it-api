@@ -144,11 +144,12 @@ router.get("/ads/all/:pageNum", async (req, res) => {
       },
     };
   }
+  const totalDocuments = await Ad.find().countDocuments();
   const ads = await Ad.find(options)
     .limit(10)
     .skip(parseInt(req.params.pageNum) * 10 - 10);
 
-  res.send(ads);
+  res.send({ results: ads, totalDocuments });
 });
 
 //Read one ad
