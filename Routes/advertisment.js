@@ -31,6 +31,7 @@ router.post(
       description,
       price,
       category,
+      contactPhoneNumber,
       location,
       district,
       state,
@@ -49,6 +50,10 @@ router.post(
 
     if (!category) {
       return res.send("Please select a category");
+    }
+
+    if (!contactPhoneNumber) {
+      return res.send("Please enter your phone number");
     }
 
     if (!state) {
@@ -89,6 +94,7 @@ router.post(
       price,
       owner: req.user._id,
       category,
+      contactPhoneNumber,
       state,
       district,
       city,
@@ -217,6 +223,7 @@ router.put("/ad/:id/edit", auth, async (req, res) => {
       "description",
       "price",
       "category",
+      "contactPhoneNumber",
       "ownerName",
       "location",
       "state",

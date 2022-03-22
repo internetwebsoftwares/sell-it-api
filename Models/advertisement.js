@@ -20,6 +20,12 @@ const adSchema = new mongoose.Schema(
       required: true,
       default: "Other",
     },
+    contactPhoneNumber: {
+      type: Number,
+      default: 9876543210,
+      required: true,
+    },
+
     isSold: {
       type: Boolean,
       default: false,
