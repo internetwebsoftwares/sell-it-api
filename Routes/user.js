@@ -222,12 +222,11 @@ router.get("/admin/users/all/:pageNo", auth, async (req, res) => {
   try {
     if (!req.user.isAdmin)
       return res.status(400).send("You dont have this permission");
-    const totalDocuments = await User.find().countDocuments();
 
     const users = await User.find({})
       .limit(10)
       .skip(parseInt(req.params.pageNo) * 10 - 10);
-    res.send({ results: users, totalDocuments });
+    res.send(users);
   } catch (error) {
     res.status(500).send(error);
   }
