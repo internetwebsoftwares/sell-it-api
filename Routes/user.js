@@ -60,7 +60,7 @@ router.post("/register", async (req, res) => {
     const user = new User({
       firstName,
       lastName,
-      email,
+      email: email.toLowerCase(),
       phoneNumber,
       password,
     });
@@ -85,7 +85,7 @@ router.post("/login", async (req, res) => {
     }
 
     const user = await User.findOne({
-      $or: [{ email, $options: "gi" }, { phoneNumber: email }],
+      $or: [{ email: email.toLowerCase() }, { phoneNumber: email }],
     });
     if (!user) {
       return res.send("No user found with this email or phone no");
